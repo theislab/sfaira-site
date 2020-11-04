@@ -18,7 +18,7 @@ dataset_files <- fs::dir_ls(here("data", "datasets"), glob = "*.csv")
 datasets <- get_datasets(dataset_files)
 ```
 
-```{r}
+```{r dashboard}
 tags <- htmltools::tags
 
 tags$div(
@@ -35,12 +35,46 @@ tags$div(
     ),
     tags$div(
         class = "col-md-4",
-        value_box(scales::number(sum(datasets$ncells), big.mark = ","),
+        value_box(scales::comma(sum(datasets$ncells)),
                   caption = "Cells", colour = "warning", icon = "splotch")
     )
 )
 ```
 
+```{r counts, fig.height = 10}
+plot_data <- datasets %>%
+    group_by(animal, organ) %>%
+    summarise(
+        Datasets = n(),
+        Cells    = sum(ncells),
+        .groups  = "drop"
+    ) %>%
+    mutate(organ = fct_reorder(organ, Cells, sum)) %>%
+    pivot_longer(
+        c(Datasets, Cells),
+        names_to = "Type",
+        values_to = "Number"
+    )
+
+ggplot(plot_data, aes(x = organ, y = Number, fill = animal)) +
+    geom_col(position = position_dodge2(preserve = "single")) +
+    scale_y_continuous(labels = scales::label_comma(accuracy = 1)) +
+    scale_fill_manual(values = c(human = "#F39C12", mouse = "#3498DB")) +
+    coord_flip() +
+    facet_wrap(~ Type, scales = "free_x") +
+    theme(
+        text               = element_text(colour = "#2C3E50"),
+        legend.position    = "bottom",
+        legend.title       = element_blank(), 
+        axis.title         = element_blank(),
+        axis.text          = element_text(colour = "#2C3E50"),
+        strip.background   = element_rect(fill = "#2C3E50"),
+        strip.text         = element_text(colour = "white", size = 16),
+        panel.border       = element_rect(fill = NA),
+        panel.grid         = element_blank(),
+        panel.grid.major.x = element_line(colour = "#2C3E50")
+    )
+```
 
 Table
 -----

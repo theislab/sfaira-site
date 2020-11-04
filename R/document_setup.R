@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
     fig.align      = "center",
     fig.width      = 10,
     fig.height     = 8,
-    dpi            = 120,
+    dpi            = 200,
     message        = FALSE,
     warning        = FALSE,
     pngquant       = "--speed=1 --quality=0-50"
