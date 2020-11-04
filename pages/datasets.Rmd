@@ -3,10 +3,13 @@
 
 ```{r setup, include = FALSE}
 source(here::here("R", "document_setup.R"))
+
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ```
 
 ```{r functions}
 source(here("R", "load.R"))
+source(here("R", "html.R"))
 ```
 
 ```{r load}
@@ -15,8 +18,32 @@ dataset_files <- fs::dir_ls(here("data", "datasets"), glob = "*.csv")
 datasets <- get_datasets(dataset_files)
 ```
 
+```{r}
+tags <- htmltools::tags
+
+tags$div(
+    class = "row",
+    tags$div(
+        class = "col-md-4",
+        value_box(nrow(datasets), caption = "Datasets", colour = "success",
+                  icon = "database")
+    ),
+    tags$div(
+        class = "col-md-4",
+        value_box(length(unique(datasets$organ)), caption = "Organs",
+                         colour = "info", icon = "user")
+    ),
+    tags$div(
+        class = "col-md-4",
+        value_box(scales::number(sum(datasets$ncells), big.mark = ","),
+                  caption = "Cells", colour = "warning", icon = "splotch")
+    )
+)
+```
+
+
 Table
-=====
+-----
 
 ```{r table}
 tbl <- datasets %>%
