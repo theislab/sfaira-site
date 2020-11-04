@@ -1,5 +1,70 @@
 ---
-title: "Datasets"
 ---
 
-Datasets
+```{r setup, include = FALSE}
+source(here::here("R", "document_setup.R"))
+```
+
+```{r functions}
+source(here("R", "load.R"))
+```
+
+```{r load}
+dataset_files <- fs::dir_ls(here("data", "datasets"), glob = "*.csv")
+
+datasets <- get_datasets(dataset_files)
+```
+
+Table
+=====
+
+```{r table}
+tbl <- datasets %>%
+    reactable::reactable(
+        defaultSorted       = "id",
+        defaultSortOrder    = "asc",
+        defaultColDef       = reactable::colDef(
+            class       = "cell",
+            headerClass = "header",
+            headerStyle = list(fontWeight = 700)
+        ),
+        defaultColGroup = reactable::colGroup(headerClass = "group-header"),
+        compact             = TRUE,
+        highlight           = TRUE,
+        showSortIcon        = FALSE,
+        borderless          = TRUE,
+        striped             = TRUE,
+        showPageSizeOptions = TRUE,
+        class               = "custom-table",
+        columns = list(
+            id = reactable::colDef(name = "ID"),
+            animal = reactable::colDef(
+                name       = "Animal",
+                filterable = TRUE
+            ),
+            organ = reactable::colDef(
+                name       = "Organ",
+                filterable = TRUE
+            ),
+            subtissue = reactable::colDef(
+                name       = "Sub-tissue",
+                filterable = TRUE
+            ),
+            ncells = reactable::colDef(name  = "Cells"),
+            protocol = reactable::colDef(
+                name       = "Protocol",
+                filterable = TRUE
+            ),
+            counts = reactable::colDef(name = "Counts"),
+            has_celltypes = reactable::colDef(
+                name       = "Has cell types?",
+                filterable = TRUE
+            ),
+            lab = reactable::colDef(name = "Lab"),
+            year = reactable::colDef(name = "Year")
+        )
+    )
+
+htmltools::div(class = "custom-table-container", tbl)
+```
+

@@ -12,7 +12,8 @@ navbar:
 output:
   rmarkdown::html_document:
     theme: flatly
-    number_sections: true
+    css: style.css
+    number_sections: false
     toc: false
     toc_float: true
     self_contained: false
