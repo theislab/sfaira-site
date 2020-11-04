@@ -1,0 +1,19 @@
+name: sfaira
+output_dir: ../docs
+navbar:
+  title: "sfaira"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Datasets"
+      href: datasets.html
+    - text: "Ontologies"
+      href: ontologies.html
+output:
+  rmarkdown::html_document:
+    theme: flatly
+    number_sections: true
+    toc: false
+    toc_float: true
+    self_contained: false
+    lib_dir: ../docs/site_libs

@@ -1,0 +1,9 @@
+---
+title: "sfaira"
+output:
+  rmarkdown::html_document:
+    toc: false
+    number_sections: false
+---
+
+Home page
