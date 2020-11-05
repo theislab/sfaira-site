@@ -2,4 +2,107 @@
 title: "Ontologies"
 ---
 
-Ontologies
+```{r setup, include = FALSE}
+source(here::here("R", "document_setup.R"))
+```
+
+```{r made-ontology-tree}
+values2viridis <- function(values) {
+    scales::gradient_n_pal(scales::viridis_pal()(100))(scales::rescale(values))
+}
+
+make_ontology_tree <- function(ontology_file) {
+    
+    ontology_list <- jsonlite::read_json(ontology_file, simplifyVector = TRUE)
+    tissue <- fs::path_ext_remove(fs::path_file(ontology_file))
+    
+    ontology <- purrr::map2_dfr(
+        names(ontology_list), ontology_list,
+        function(.parent, .children) {
+            if (is.null(.children)) {
+                return(tibble::tibble(Parent = character(), Child = character()))
+            }
+        
+        tibble::tibble(Parent = .parent, Child = .children)
+    }) %>%
+        dplyr::bind_rows(
+            tibble::tibble(Parent = tissue, Child = names(ontology_list))
+        ) %>%
+        dplyr::bind_rows(tibble::tibble(Parent = NA, Child = tissue)) %>%
+        dplyr::mutate(
+            Children = purrr::map_dbl(Child, function(.child) {
+                sum(Parent == .child, na.rm = TRUE)
+            }),
+            Colour = values2viridis(Children)
+        )
+    
+    collapsibleTree::collapsibleTreeNetwork(
+        ontology,
+        collapsed = TRUE,
+        fill = "Colour", 
+        width = 910, height = 600
+    )
+}
+```
+
+# Trees {.tabset .tabset-pills .tabset-fade}
+
+Use the menu to select an ontology to display.
+You can click nodes to expand the child cell types.
+Node colours indicate the number of children.
+
+## Human {.tabset .tabset-dropdown .tabset-fade}
+
+```{r ontologies-human, results = "hide"}
+ontology_files <- fs::dir_ls(
+    here("data", "ontologies", "human"),
+    glob = "*.json"
+)
+
+src_list <- map_chr(ontology_files, function(.file) {
+    
+    tissue <- fs::path_ext_remove(fs::path_file(.file))
+    
+    src <- c(
+        "### <<tissue>> {.unnumbered}",
+        "```{r ontology-human-<<tissue>>}",
+        "make_ontology_tree('<<.file>>')",
+        "```",
+        ""
+    )
+    
+    knitr::knit_expand(text = src, delim = c("<<", ">>"))
+})
+
+out <- knitr::knit_child(text = unlist(src_list), options = list(cache = FALSE))
+```
+
+`r out`
+
+## Mouse {.tabset .tabset-dropdown .tabset-fade}
+
+```{r ontologies-mouse, results = "hide"}
+ontology_files <- fs::dir_ls(
+    here("data", "ontologies", "mouse"),
+    glob = "*.json"
+)
+
+src_list <- map_chr(ontology_files, function(.file) {
+    
+    tissue <- fs::path_ext_remove(fs::path_file(.file))
+    
+    src <- c(
+        "### <<tissue>> {.unnumbered}",
+        "```{r ontology-mouse-<<tissue>>}",
+        "make_ontology_tree('<<.file>>')",
+        "```",
+        ""
+    )
+    
+    knitr::knit_expand(text = src, delim = c("<<", ">>"))
+})
+
+out <- knitr::knit_child(text = unlist(src_list), options = list(cache = FALSE))
+```
+
+`r out`
