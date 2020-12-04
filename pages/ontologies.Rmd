@@ -6,7 +6,7 @@ title: "Ontologies"
 source(here::here("R", "document_setup.R"))
 ```
 
-```{r made-ontology-tree}
+```{r make-ontology-tree}
 values2viridis <- function(values) {
     scales::gradient_n_pal(scales::viridis_pal()(100))(scales::rescale(values))
 }
@@ -45,11 +45,19 @@ make_ontology_tree <- function(ontology_file) {
 }
 ```
 
-# Trees {.tabset .tabset-pills .tabset-fade}
+<div class="alert alert-warning">
+  <strong>Note:</strong>
+  This page is still under construction.
+  Currently we only show examples of a small subset of ontologies to demonstrate the information we plan to provide.
+</div>
+
+# {.tabset .tabset-pills .tabset-fade}
 
 Use the menu to select an ontology to display.
 You can click nodes to expand the child cell types.
 Node colours indicate the number of children.
+
+**Species**
 
 ## Human {.tabset .tabset-dropdown .tabset-fade}
 
@@ -76,6 +84,8 @@ src_list <- map_chr(ontology_files, function(.file) {
 
 out <- knitr::knit_child(text = unlist(src_list), options = list(cache = FALSE))
 ```
+
+**Tissue**
 
 `r out`
 
@@ -104,5 +114,7 @@ src_list <- map_chr(ontology_files, function(.file) {
 
 out <- knitr::knit_child(text = unlist(src_list), options = list(cache = FALSE))
 ```
+
+**Tissue**
 
 `r out`
