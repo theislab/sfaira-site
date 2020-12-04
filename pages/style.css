@@ -102,6 +102,10 @@
     border: none;
 }
 
+.title{
+    display: none;
+}
+
 /* *****************************************************************************
    Selected Dashboard CSS from Keen IO Dashboards
    (https://github.com/keen/dashboards)

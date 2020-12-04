@@ -45,13 +45,13 @@ make_ontology_tree <- function(ontology_file) {
 }
 ```
 
+# Ontologies {.tabset .tabset-pills .tabset-fade}
+
 <div class="alert alert-warning">
   <strong>Note:</strong>
   This page is still under construction.
   Currently we only show examples of a small subset of ontologies to demonstrate the information we plan to provide.
 </div>
-
-# {.tabset .tabset-pills .tabset-fade}
 
 Use the menu to select an ontology to display.
 You can click nodes to expand the child cell types.
