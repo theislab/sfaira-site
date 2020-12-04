@@ -18,6 +18,9 @@ get_datasets <- function(datasets_files) {
     datasets <- datasets_list %>%
         dplyr::bind_rows() %>%
         dplyr::mutate(
+            study = stringr::str_extract(id, "(?<=_)[^_]*$")
+        ) %>%
+        dplyr::mutate(
             animal    = factor(animal),
             organ     = factor(organ),
             subtissue = factor(subtissue),
@@ -26,6 +29,6 @@ get_datasets <- function(datasets_files) {
         dplyr::select(-X1) %>%
         dplyr::relocate(
             id, animal, organ, subtissue, ncells, protocol, counts,
-            has_celltypes, lab, year
+            has_celltypes, study, lab, year
         )
 }

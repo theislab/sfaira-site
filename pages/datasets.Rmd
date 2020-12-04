@@ -24,17 +24,22 @@ tags <- htmltools::tags
 tags$div(
     class = "row",
     tags$div(
-        class = "col-md-4",
+        class = "col-md-3",
         value_box(nrow(datasets), caption = "Datasets", colour = "success",
                   icon = "database")
     ),
     tags$div(
-        class = "col-md-4",
-        value_box(length(unique(datasets$organ)), caption = "Organs",
-                         colour = "info", icon = "user")
+        class = "col-md-3",
+        value_box(length(unique(datasets$study)), caption = "Studies",
+                  colour = "danger", icon = "file-alt")
     ),
     tags$div(
-        class = "col-md-4",
+        class = "col-md-3",
+        value_box(length(unique(datasets$organ)), caption = "Organs",
+                         colour = "info", icon = "heart")
+    ),
+    tags$div(
+        class = "col-md-3",
         value_box(scales::comma(sum(datasets$ncells)),
                   caption = "Cells", colour = "warning", icon = "splotch")
     )
@@ -82,8 +87,8 @@ Table
 ```{r table}
 tbl <- datasets %>%
     reactable::reactable(
-        defaultSorted       = "id",
-        defaultSortOrder    = "asc",
+        defaultSorted       = "ncells",
+        defaultSortOrder    = "desc",
         defaultColDef       = reactable::colDef(
             class       = "cell",
             headerClass = "header",
@@ -96,33 +101,55 @@ tbl <- datasets %>%
         borderless          = TRUE,
         striped             = TRUE,
         showPageSizeOptions = TRUE,
+        searchable          = TRUE,
         class               = "custom-table",
         columns = list(
-            id = reactable::colDef(name = "ID"),
+            id = reactable::colDef(show = FALSE),
             animal = reactable::colDef(
-                name       = "Animal",
-                filterable = TRUE
+                name       = "Species",
+                filterable = TRUE,
+                width      = 70
             ),
             organ = reactable::colDef(
                 name       = "Organ",
-                filterable = TRUE
+                filterable = TRUE,
+                width      = 100
             ),
             subtissue = reactable::colDef(
-                name       = "Sub-tissue",
-                filterable = TRUE
+                name       = "Sub-tissues",
+                filterable = TRUE,
+                width      = 150
             ),
-            ncells = reactable::colDef(name  = "Cells"),
+            ncells = reactable::colDef(
+                name       = "Cells",
+                width      = 60
+            ),
             protocol = reactable::colDef(
                 name       = "Protocol",
-                filterable = TRUE
+                filterable = TRUE,
+                width      = 110
             ),
-            counts = reactable::colDef(name = "Counts"),
+            counts = reactable::colDef(
+                name       = "Counts",
+                width      = 70
+            ),
             has_celltypes = reactable::colDef(
                 name       = "Has cell types?",
-                filterable = TRUE
+                filterable = TRUE,
+                width      = 80
             ),
-            lab = reactable::colDef(name = "Lab"),
-            year = reactable::colDef(name = "Year")
+            study = reactable::colDef(
+                name       = "Study",
+                width      = 120
+            ),
+            lab = reactable::colDef(
+                name       = "Lab",
+                width      = 100
+            ),
+            year = reactable::colDef(
+                name       = "Year",
+                width      = 50
+            )
         )
     )
 
