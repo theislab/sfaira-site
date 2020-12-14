@@ -12,7 +12,10 @@ sfaira is a model and a data repository.
 Its data zoo gives users access to streamlined data loaders that allow reproducible use of published and private data sets for model training and exploration.
 Its model zoo gives user streamlined access to pre-trained models and to common model architectures to ease usage of neural networks in common single-cell analysis workflows.
 
-![](https://raw.githubusercontent.com/theislab/sfaira/master/resources/images/concept.jpeg)
+```{r concept, echo = FALSE, fig.align = "center"}
+knitr::include_graphics("https://raw.githubusercontent.com/theislab/sfaira/master/resources/images/concept.png")
+```
+
 
 This site displays information about the data sets and cell type ontologies that are currently available form sfaira.
 More information on the sfaira software is available at [sfaira.readthedocs.io/](https://sfaira.readthedocs.io/).
